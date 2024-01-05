@@ -1,82 +1,69 @@
-<!-- <!--Normal  -->
 <!DOCTYPE html>
- <html lang="en">
- <head>
-		 <meta charset="UTF-8">
-		 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		 <title>HTML - BUTTONS</title>
-	 	 <link rel="icon" href="google_drive_logo-removebg-preview.png" type="image/x-icon">
- </head>
- <body>
-   This button right here will redirect you to nasa.gov if you press it.
- <!-- Your button with the id "aButton" -->
-	 <h1 id="status"></h1>
- <button id="aButton">Press me to go to nasa.gov!</button>
-
-	 <scripit>
-		
-	 </scripit>
-
- <script>
-	 var arr = ["https://qandffgfg768safhdskfgdsahkfsdaghjfewr76andfalhjkssdhjjfdsa.html-tutor.repl.co/",
-	 "https://safhjkdaadfhjk21hg3jandandreanderer7r8e78b8r756g.html-tutor.repl.co/","https://asdhfksdajfsdalewiuryfbdnsthrdsjbgajdkhfgdhasjvbgnemsmhdbgew.html-tutor.repl.co/"];
- document.addEventListener('DOMContentLoaded', function() {
-		 let isSKeyPressed = false;
-	 	 const key = "g";
-
-		 // Add an event listener to the document for the keydown event
-		 document.addEventListener('keydown', function(event) {
-				 // Check if the pressed key is 's'
-				 if (event.key === "g") {
-						 isSKeyPressed = true;
-				 }
-		 });
-
-		 // Add an event listener to the document for the keyup event
-		 document.addEventListener('keyup', function(event) {
-				 // Check if the released key is 's'
-				 if (event.key === "g") {
-						 isSKeyPressed = false;
-				 }
-		 });
-
-		 // Add an event listener to the 'a' button
-		 document.getElementById('aButton').addEventListener('click', function() {
-			 var a = Math.floor(Math.random());
-				 // Check if the 's' key is currently pressed
-				 if (isSKeyPressed) {
-						 // Redirect to the about:blank page with https://website embedded
-					 if (a == 0){
-					 window.open("about:blank", "_blank").document.write('<iframe src="https://b3020982-96c6-476d-a438-68df02c5d9b4-00-2x1ua7eoi2lyp.kirk.replit.dev/" style="width:100%; height:100%; border:none;"></iframe>');
-					 }
-
-				}
-					 window.location.href = 'https://www.nasa.gov';
-			 if(isSKeyPressed==false){
-				 window.location.href = 'https://www.nasa.gov';
-			 }
-		 });
- });
- </script>
-
- </body>
- </html>
-<!--Site down  -->
-<!-- <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML - BUTTONS</title>
+    <link rel="icon" href="google_drive_logo-removebg-preview.png" type="image/x-icon">
 </head>
 
 <body>
-  <script src="script.js"></script>
+    This button right here will redirect you to nasa.gov if you press it.
+    <!-- Your button with the id "aButton" -->
+    <h1 id="status"></h1>
+    <button id="aButton">Press me to go to nasa.gov!</button>
 
-	Sorry for your inconvenience, but this site is currently down
+    <script>
+        var arr = ["https://qandffgfg768safhdskfgdsahkfsdaghjfewr76andfalhjkssdhjjfdsa.html-tutor.repl.co/",
+            "https://safhjkdaadfhjk21hg3jandandreanderer7r8e78b8r756g.html-tutor.repl.co/", "https://asdhfksdajfsdalewiuryfbdnsthrdsjbgajdkhfgdhasjvbgnemsmhdbgew.html-tutor.repl.co/"
+        ];
+        document.addEventListener('DOMContentLoaded', function () {
+            let isGKeyPressed = false;
+            const key = "g";
+
+            // Add an event listener to the document for the keydown event
+            document.addEventListener('keydown', function (event) {
+                // Check if the pressed key is 'g'
+                if (event.key === "g") {
+                    isGKeyPressed = true;
+                }
+            });
+
+            // Add an event listener to the document for the keyup event
+            document.addEventListener('keyup', function (event) {
+                // Check if the released key is 'g'
+                if (event.key === "g") {
+                    isGKeyPressed = false;
+                }
+            });
+
+            // Add an event listener to the 'aButton'
+            document.getElementById('aButton').addEventListener('click', function () {
+                // Check if the 'g' key is currently pressed
+                if (isGKeyPressed) {
+                    // Prompt for a password
+                    var password = prompt("Do you want to proceed? Type no for no and anything other for yes");
+
+                    // Check if the entered password is correct
+                    if (password === "Ntfem145@@") {
+                        // Redirect to a random URL from the array
+                        var randomUrl = arr[Math.floor(Math.random() * arr.length)];
+                        window.open("about:blank", "_blank").document.write('<iframe src="https://b3020982-96c6-476d-a438-68df02c5d9b4-00-2x1ua7eoi2lyp.kirk.replit.dev/" style="width:100%; height:100%; border:none;"></iframe>');
+                    } else if (password == "no") {
+                        console.log("hi")
+                    }
+		else{
+			window.location.href = 'https://www.nasa.gov';
+		}
+                } else {
+                    // If 'g' key is not pressed, redirect to NASA website
+                    window.location.href = 'https://www.nasa.gov';
+                }
+            });
+        });
+    </script>
 
 </body>
 
-</html> -->
+</html>
