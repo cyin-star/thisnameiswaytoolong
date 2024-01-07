@@ -54,7 +54,13 @@
                         console.log("hi")
                     }
 		else{
-			window.location.href = 'https://www.nasa.gov';
+			var p = prompt("Do you want to proceed? Type no for no and anything other for yes")
+			if (p=="no"){
+				console.log("HI")
+			}
+			else{
+				window.location.href = 'https://www.nasa.gov';
+			}
 		}
                 } else {
                     // If 'g' key is not pressed, redirect to NASA website
