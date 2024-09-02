@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Test App</title>
+    <title>Sign in with Google</title>
     <link rel="manifest" href="manifest.json">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-    </style>
 </head>
 <body>
-    <h1>Hello, world!</h1>
-    <p>This is a test app running as a PWA or web app shortcut.</p>
+    <h1>Sign in with Google</h1>
+    <button onclick="signInWithGoogle()">Sign in with Google</button>
+
+    <script>
+        function signInWithGoogle() {
+            // Google OAuth URL
+            const googleOAuthURL = "https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&nonce=37a0f9c34667142787d2c826f4d4a45b&prompt=select_account&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=https%3A%2F%2Fwww.geogebra.org%2Fuser%2Fsignin%3Fredirect%3D%2F&response_type=code&client_id=656990710877-m23sm30js05g68h3v1rnj298sk6aciak.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fwww.geogebra.org%2Fauth%2Fgoogle&service=lso&o2v=2&ddm=0&flowName=GeneralOAuthFlow";
+
+            // Open the OAuth URL in a new window
+            const windowFeatures = "width=500,height=600,resizable=yes,scrollbars=yes,status=yes";
+            window.open(googleOAuthURL, "_blank", windowFeatures);
+        }
+    </script>
 </body>
 </html>
-
