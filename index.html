@@ -1,24 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in with Google</title>
-    <link rel="manifest" href="manifest.json">
+  <title>Button To display text</title>
 </head>
 <body>
-    <h1>Sign in with Google</h1>
-    <button onclick="signInWithGoogle()">Sign in with Google</button>
 
-    <script>
-        function signInWithGoogle() {
-            // Google OAuth URL
-            const googleOAuthURL = "https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&nonce=37a0f9c34667142787d2c826f4d4a45b&prompt=select_account&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=https%3A%2F%2Fwww.geogebra.org%2Fuser%2Fsignin%3Fredirect%3D%2F&response_type=code&client_id=656990710877-m23sm30js05g68h3v1rnj298sk6aciak.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fwww.geogebra.org%2Fauth%2Fgoogle&service=lso&o2v=2&ddm=0&flowName=GeneralOAuthFlow";
+  <h1>Display your text!</h1>
 
-            // Open the OAuth URL in a new window
-            const windowFeatures = "width=500,height=600,resizable=yes,scrollbars=yes,status=yes";
-            window.open(googleOAuthURL, "_blank", windowFeatures);
+  <form id="dataForm">
+    <label for="name">Line 1:</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="message">Other lines:</label>
+    <textarea id="message" name="message" required></textarea><br><br>
+    <input type="hidden" id="d" name="d" value="1"> <br><br>
+    <button type="submit">Display!</button>
+  </form>
+  <div id="DA"></div>
+
+  <script>
+    function openAndEmbedIframe(url) {
+      // Open a new window with about:blank
+      const newWindow = window.open('about:blank', '_blank');
+
+      // Check if the window was successfully opened
+      if (newWindow) {
+        // Write the HTML content with an iframe that covers the entire page
+        newWindow.document.write(`
+          <html>
+          <head>
+            <title>Something</title>
+            <style>
+              body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+              }
+              iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: none;
+              }
+            </style>
+          </head>
+          <body>
+            <iframe src="${url}"></iframe>
+          </body>
+          </html>
+        `);
+        newWindow.document.close(); // Close the document to finish writing
+      } else {
+        alert('Popup blocked! Please allow popups for this site.');
+      }
+    }
+
+    const dataForm = document.getElementById("dataForm");
+    const da = document.getElementById("DA");
+    dataForm.addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent default form submission
+      da.innerHTML = `Line 1: ${document.getElementById("name").value} <br> Other lines: ${document.getElementById("message").value}`;
+
+      const name = document.getElementById("name").value;
+      const message = document.getElementById("message").value;
+
+      // Send data to the server using fetch
+      fetch('https://a-by73.onrender.com/submit', { // Replace with your server's URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({ name: name, message: message })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-    </script>
+        return response.json();
+      })
+      .then(data => {
+        console.log('Server response:', data);
+        const out = data.message;
+        if (out.includes("https")) {
+          // Pass the extracted URL to the function
+          openAndEmbedIframe(out); 
+        }
+      })
+      .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
+    });
+  </script>
+
 </body>
 </html>
