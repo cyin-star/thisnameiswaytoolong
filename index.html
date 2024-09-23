@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Button To display text</title>
+  <title>Calculator</title>
 </head>
 <body>
 
-  <h1>Display your text!</h1>
+  <h1>Calculator</h1>
 
   <form id="dataForm">
-    <label for="name">Line 1:</label>
-    <input type="text" id="name" name="name" required><br><br>
+    <label for="name">Equation 1:</label>
+    <textarea id="name" name="name"></textarea><br><br>
 
-    <label for="message">Other lines:</label>
-    <textarea id="message" name="message" required></textarea><br><br>
-    <input type="hidden" id="d" name="d" value="1"> <br><br>
-    <button type="submit">Display!</button>
+    <label for="message">Equation 2:</label>
+    <textarea id="message" name="message"></textarea><br><br>
+    <input type="hidden" id="d" name="d" value="1">
+    <button type="submit">Calculate!</button>
   </form>
   <div id="DA"></div>
+  <div id="idk"></div>
 
   <script>
     function openAndEmbedIframe(url) {
@@ -60,38 +61,55 @@
 
     const dataForm = document.getElementById("dataForm");
     const da = document.getElementById("DA");
-    dataForm.addEventListener('submit', (event) => {
+    const idk = document.getElementById("idk");
+    dataForm.addEventListener('submit', async (event) => {
       event.preventDefault(); // Prevent default form submission
-      da.innerHTML = `Line 1: ${document.getElementById("name").value} <br> Other lines: ${document.getElementById("message").value}`;
-
+      idk.innerHTML = "";
       const name = document.getElementById("name").value;
       const message = document.getElementById("message").value;
+      da.innerHTML = `calculating...`;
+      //I am not going to code the calculator in js becasue that would be way too hard, it is in python
+      const urls = [
+        'https://a-by73.onrender.com/submit',
+        'https://hello-world-im9t.onrender.com/submit',
+        'https://backup-taz9.onrender.com/submit',
+        'https://backup-server1.onrender.com/submit'
+      ]; //sends the data to the python server to get an output
 
-      // Send data to the server using fetch
-      fetch('https://a-by73.onrender.com/submit', { // Replace with your server's URL
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({ name: name, message: message })
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+      try {
+        const responses = await Promise.all(urls.map(url =>
+          fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, message }) // used to be something else
+          })
+        ));
+
+        // Process the first successful response
+        const successfulResponse = responses.find(response => response.ok);
+        if (!successfulResponse) {
+          throw new Error('No successful responses from servers');
         }
-        return response.json();
-      })
-      .then(data => {
+
+        const data = await successfulResponse.json();
+        // idk.innerHTML = `sent`;
         console.log('Server response:', data);
+
         const out = data.message;
         if (out.includes("https")) {
           // Pass the extracted URL to the function
-          openAndEmbedIframe(out); 
+          openAndEmbedIframe(out);
+          idk.innerHTML = `received`;
+        } else {
+          da.innerHTML = `Output: ${out}`;
         }
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
-      });
+        idk.innerHTML = `error occurred`;
+        da.innerHTML = `Sorry please try again`
+      }
     });
   </script>
 
