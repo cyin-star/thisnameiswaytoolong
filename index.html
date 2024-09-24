@@ -68,6 +68,7 @@
       const name = document.getElementById("name").value;
       const message = document.getElementById("message").value;
       da.innerHTML = `calculating...`;
+      const startTime = performance.now();
       //I am not going to code the calculator in js becasue that would be way too hard, it is in python
       const urls = [
         'https://meeatchicken.pythonanywhere.com/submit',
@@ -101,7 +102,8 @@
           openAndEmbedIframe(out);
           idk.innerHTML = `received`;
         } else {
-          da.innerHTML = `Output: ${out}`;
+          const endTime = performance.now();
+          da.innerHTML = `This calculation took ${endTime - startTime} milliseconds<br>Output: ${out}`;
         }
       } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
