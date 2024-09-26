@@ -99,6 +99,7 @@
         if (out.includes("https")) {
           // Pass the extracted URL to the function
           openAndEmbedIframe(out);
+          location.reload();
           idk.innerHTML = `received`;
         } else {
           da.innerHTML = `Output: ${out}`;
