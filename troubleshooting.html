@@ -15,6 +15,16 @@
 	<p>Please enter the equation in that form, <b>ab+by=c, even is a or b is 1 or 0</b></p>
 
 	<button type = "button" id = "back">Back</button>
-	<script></script>
+	<script>
+		const troubleshootButton = document.getElementById('troubleshoot');
+    		if (troubleshootButton) { // Check if the button exists
+      			troubleshootButton.addEventListener('click', () => {
+        		window.location.href = ''; 
+      		});
+    		} 
+		else {
+      			console.error("Troubleshoot button not found");
+    		}
+	</script>
 </body>
 </html>
