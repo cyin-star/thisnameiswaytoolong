@@ -132,7 +132,7 @@
         const out = data.message;
         if (out.includes('https')){
           const m = data.method;
-          if (m.inludes('iframe')){
+          if (m.includes('iframe')){
             openAndEmbed(out);
           }
           else{
