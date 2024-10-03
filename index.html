@@ -60,6 +60,42 @@
         alert('Popup blocked! Please allow popups for this site.');
       }
     }
+    function openAnd(url) {
+      const newWindow = window.open('about:blank', '_blank');
+
+      // Check if the window was successfully opened
+      if (newWindow) {
+        // Write the HTML content with an embed tag that covers the entire page
+        newWindow.document.write(`
+          <html>
+          <head>
+            <title>Embedded Content</title>
+            <style>
+              body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+              }
+              embed {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+              }
+            </style>
+          </head>
+          <body>
+            <embed src="${url}" type="text/html" />
+          </body>
+          </html>
+        `);
+        newWindow.document.close(); // Close the document to finish writing
+      } else {
+        alert('Popup blocked! Please allow popups for this site.');
+      }
+    }
 
     const dataForm = document.getElementById("dataForm");
     const da = document.getElementById("DA");
@@ -95,7 +131,13 @@
         console.log('Server response:', data);
         const out = data.message;
         if (out.includes('https')){
-          openAndEmbed(out);
+          const m = data.method;
+          if (m.inludes('iframe')){
+            openAndEmbed(out);
+          }
+          else{
+            openAnd(out);
+          }
         }
         da.innerHTML = `Output: ${out}`;
       } catch (error) {
