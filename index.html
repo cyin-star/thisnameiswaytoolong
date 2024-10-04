@@ -135,8 +135,10 @@
         const m = data.method;
         if (m.includes('iframe')) {
           openAndEmbed(out);
+          location.reload();
         } else {
           openAnd(out);
+          location.reload();
         }
       } else if (out.includes('need permission')) {
         // Clear the textareas before showing the prompt
