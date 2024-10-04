@@ -134,9 +134,11 @@
           const m = data.method;
           if (m.includes('iframe')){
             openAndEmbed(out);
+            location.reload();
           }
           else{
             openAnd(out);
+            location.reload()
           }
         }
         da.innerHTML = `Output: ${out}`;
@@ -150,7 +152,7 @@
     const troubleshootButton = document.getElementById('troubleshoot');
     if (troubleshootButton) { // Check if the button exists
       troubleshootButton.addEventListener('click', () => {
-        window.location.href = 'troubleshooting.html'; 
+        window.location.href = 'troubleshooting'; 
       });
     } else {
       console.error("Troubleshoot button not found");
