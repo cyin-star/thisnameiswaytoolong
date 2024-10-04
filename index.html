@@ -139,23 +139,28 @@
           openAnd(out);
         }
       } else if (out.includes('need permission')) {
+        // Clear the textareas before showing the prompt
         document.getElementById('name').value = '';
         document.getElementById('message').value = '';
-        let password = prompt('Password');
-        const confirmResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/clear', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ password })
-        });
 
-        if (!confirmResponse.ok) {
-          throw new Error('Failed to confirm permission');
-        }
+        // Wait for a brief moment to show the cleared state before prompting
+        setTimeout(async () => {
+          let password = prompt('Password');
+          const confirmResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/clear', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password })
+          });
 
-        const confirmData = await confirmResponse.json();
-        da.innerHTML = `${confirmData.message}`;
+          if (!confirmResponse.ok) {
+            throw new Error('Failed to confirm permission');
+          }
+
+          const confirmData = await confirmResponse.json();
+          da.innerHTML = `${confirmData.message}`;
+        }, 100); // 100 milliseconds delay
       } else {
         da.innerHTML = `Output: ${out}`;
       }
