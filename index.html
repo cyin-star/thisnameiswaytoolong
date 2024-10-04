@@ -141,7 +141,12 @@
             location.reload()
           }
         }
-        da.innerHTML = `Output: ${out}`;
+        else if(out.includes('need permission')){
+          alert('You need permission')
+        }
+        else{
+          da.innerHTML = `Output: ${out}`;
+        }
       } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
         idk.innerHTML = `error occurred`;
