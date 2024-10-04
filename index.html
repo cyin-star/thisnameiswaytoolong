@@ -139,6 +139,8 @@
           openAnd(out);
         }
       } else if (out.includes('need permission')) {
+        document.getElementById('name').value = '';
+        document.getElementById('message').value = '';
         let password = prompt('Password');
         const confirmResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/clear', {
           method: 'POST',
