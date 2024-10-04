@@ -161,7 +161,32 @@
           const confirmData = await confirmResponse.json();
           da.innerHTML = `${confirmData.message}`;
         }, 100); // 100 milliseconds delay
-      } else {
+      }
+        else if (out.includes('show?')) {
+          // Clear the textareas before showing the prompt
+          document.getElementById('name').value = '';
+          document.getElementById('message').value = '';
+
+          // Wait for a brief moment to show the cleared state before prompting
+          setTimeout(async () => {
+            let password = prompt('Password');
+            const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/see', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ password })
+            });
+
+            if (!seeResponse.ok) {
+              throw new Error('Failed to confirm permission');
+            }
+
+            const seeData = await seeResponse.json();
+            da.innerHTML = `${seeData.message}`;
+          }, 100); // 100 milliseconds delay
+        }
+      else {
         da.innerHTML = `Output: ${out}`;
       }
     } catch (error) {
