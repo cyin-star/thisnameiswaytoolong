@@ -1,1 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .error { color: red; }
+    .success { color: green; }
+  </style>
+</head>
+<body>
 
+<h1>Get quadratic info</h1>
+
+<form id="dataForm" aria-label="Calculator Form">
+  <label for="name">Equation:</label>
+  <textarea id="name" name="name" aria-label="Equation 1"></textarea><br><br>  
+  <br><br>
+  <input type="hidden" id="d" name="d" value="1">
+  <button type="submit">Calculate!</button>
+</form>
+
+<div id="DA"></div>
+<div id="idk"></div>
+<ul>Please input both equations in ax^2+bx+c even is b,c is 0</br> form.</ul>
+<button type="button" id="troubleshoot">Troubleshoot Errors</button>
+<button type="button" id="hub">All calculators</button>
+
+<script>
+
+  const dataForm = document.getElementById("dataForm");
+  const da = document.getElementById("DA");
+  const idk = document.getElementById("idk");
+
+  dataForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    idk.innerHTML = "";
+    const name = document.getElementById("name").value;
+    da.innerHTML = `Calculating...`;
+
+    const links = ['https://meeatchicken.pythonanywhere.com/get/quad-info'];
+
+    try {
+      const responses = await Promise.all(links.map(link =>
+        fetch(link, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name})
+        })
+      ));
+
+      const successfulResponse = responses.find(response => response.ok);
+      if (!successfulResponse) {
+        throw new Error('No successful responses from servers');
+      }
+
+      const data = await successfulResponse.json();
+      console.log('Server response:', data);
+      const out = data.message;
+      da.innerHTML = `Output: ${out}`;
+    } catch (error) {
+      console.error('There has been a problem with your fetch operation:', error);
+      idk.innerHTML = `Error occurred`;
+      da.innerHTML = `Message: ${error.message}`;
+    }
+  });
+
+  const troubleshootButton = document.getElementById('troubleshoot');
+  if (troubleshootButton) {
+    troubleshootButton.addEventListener('click', () => {
+      window.location.href = 'troubleshooting'; 
+    });
+  } else {
+    console.error("Troubleshoot button not found");
+  }
+      const h = document.getElementById('hub');
+  if (h) {
+    h.addEventListener('click', () => {
+      window.location.href = 'https://clalc.netlify.app/calcs'; 
+    });
+  } else {
+    console.error("Troubleshoot button not found");
+  }
+</script>
+
+</body>
+</html>
