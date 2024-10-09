@@ -11,6 +11,7 @@
 	<button type = "button" id = "back">Calculator(2 variable linear/expressions)</button>
   <button type = "button" id = "q">2 quadiatic equations</button>
 	 <button type = "button" id = "q1">Linear-quad-intersection</button>
+<button type = "button" id = "q2">Get info about a quad equation</button>
 	<script>
 		const troubleshootButton = document.getElementById('back');
     		if (troubleshootButton) { // Check if the button exists
@@ -28,6 +29,12 @@
     		if (qu1) { // Check if the button exists
       			qu1.addEventListener('click', () => {
         		window.location.href = 'https://clalc.netlify.app/quad/linear'; 
+      		});
+    		} 
+		const qu2 = document.getElementById('q2');
+		if (qu2) { // Check if the button exists
+      			qu2.addEventListener('click', () => {
+        		window.location.href = 'https://clalc.netlify.app/quad/get-info'; 
       		});
     		} 
 	</script>
