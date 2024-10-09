@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .error { color: red; }
+    .success { color: green; }
+  </style>
+</head>
+<body>
+
+<h1>Calculator</h1>
+
+<form id="dataForm" aria-label="Calculator Form">
+  <label for="name">Equation 1:</label>
+  <textarea id="name" name="name" aria-label="Equation 1"></textarea><br><br>
+
+  <label for="message">Equation 2:</label>
+  <textarea id="message" name="message" aria-label="Equation 2"></textarea>  
+  <br><br>
+  <input type="hidden" id="d" name="d" value="1">
+  <button type="submit">Calculate!</button>
+</form>
+
+<div id="DA"></div>
+<div id="idk"></div>
+<ul>To use it like a normal calculator, please only fill in one box.</ul>
+<ul>To solve 2-variable <b>LINEAR</b> equations, enter in <br>ax + by = c</br> form.</ul>
+<button type="button" id="troubleshoot">Troubleshoot Errors</button>
+
+<script>
+
+  const dataForm = document.getElementById("dataForm");
+  const da = document.getElementById("DA");
+  const idk = document.getElementById("idk");
+
+  dataForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    idk.innerHTML = "";
+    const name = document.getElementById("name").value;
+    const message = document.getElementById("message").value;
+    da.innerHTML = `Calculating...`;
+
+    const links = ['https://meeatchicken.pythonanywhere.com/quad'];
+
+    try {
+      const responses = await Promise.all(links.map(link =>
+        fetch(link, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, message })
+        })
+      ));
+
+      const successfulResponse = responses.find(response => response.ok);
+      if (!successfulResponse) {
+        throw new Error('No successful responses from servers');
+      }
+
+      const data = await successfulResponse.json();
+      console.log('Server response:', data);
+      const out = data.message;
+      da.innerHTML = `Output: ${out}`;
+    } catch (error) {
+      console.error('There has been a problem with your fetch operation:', error);
+      idk.innerHTML = `Error occurred`;
+      da.innerHTML = `Message: ${error.message}`;
+    }
+  });
+
+  const troubleshootButton = document.getElementById('troubleshoot');
+  if (troubleshootButton) {
+    troubleshootButton.addEventListener('click', () => {
+      window.location.href = 'troubleshooting'; 
+    });
+  } else {
+    console.error("Troubleshoot button not found");
+  }
+</script>
+
+</body>
+</html>
