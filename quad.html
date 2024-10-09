@@ -27,6 +27,7 @@
 <div id="idk"></div>
 <ul>Please input both equations in ax^2+bx+c even is b,c is 0</br> form.</ul>
 <button type="button" id="troubleshoot">Troubleshoot Errors</button>
+<button type="button" id="hub">All calculators</button>
 
 <script>
 
@@ -74,6 +75,14 @@
   if (troubleshootButton) {
     troubleshootButton.addEventListener('click', () => {
       window.location.href = 'troubleshooting'; 
+    });
+  } else {
+    console.error("Troubleshoot button not found");
+  }
+      const h = document.getElementById('hub');
+  if (h) {
+    h.addEventListener('click', () => {
+      window.location.href = 'calcs'; 
     });
   } else {
     console.error("Troubleshoot button not found");
