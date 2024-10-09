@@ -10,6 +10,7 @@
 
 	<button type = "button" id = "back">Calculator(2 variable linear/expressions)</button>
   <button type = "button" id = "q">2 quadiatic equations</button>
+	 <button type = "button" id = "q1">2 quadiatic equations</button>
 	<script>
 		const troubleshootButton = document.getElementById('back');
     		if (troubleshootButton) { // Check if the button exists
@@ -21,6 +22,12 @@
     		if (qu) { // Check if the button exists
       			qu.addEventListener('click', () => {
         		window.location.href = 'https://clalc.netlify.app/quad'; 
+      		});
+    		} 
+		    		const qu1 = document.getElementById('q');
+    		if (qu1) { // Check if the button exists
+      			qu1.addEventListener('click', () => {
+        		window.location.href = 'https://clalc.netlify.app/quad/linear'; 
       		});
     		} 
 	</script>
