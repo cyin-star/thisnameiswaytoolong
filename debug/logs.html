@@ -15,25 +15,38 @@
 <div id="DA"></div>
 
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-  const da = document.getElementById("DA");
-  let password = prompt('Password');
-  const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/see', {
-  method: 'POST',
-  headers: {
-      'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ password })
-            });
+  // Ensure the code runs after the DOM has fully loaded
+  document.addEventListener('DOMContentLoaded', async () => {
+    const da = document.getElementById("DA");
 
-            if (!seeResponse.ok) {
-              throw new Error('Failed to confirm permission');
-            }
+    // Prompt user for password
+    let password = prompt('Password');
+    
+    try {
+      // Send a POST request to confirm permission
+      const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/see', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password })
+      });
 
-            const seeData = await seeResponse.json();
-            da.innerHTML = `${seeData.message}`;
-  }
-  
+      // Check if the response is ok (status 200)
+      if (!seeResponse.ok) {
+        throw new Error('Failed to confirm permission');
+      }
+
+      // Parse the response data
+      const seeData = await seeResponse.json();
+
+      // Display the message in the div
+      da.innerHTML = `<span class="success">${seeData.message}</span>`;
+    } catch (error) {
+      // Handle any errors
+      da.innerHTML = `<span class="error">${error.message}</span>`;
+    }
+  });
 </script>
 
 </body>
