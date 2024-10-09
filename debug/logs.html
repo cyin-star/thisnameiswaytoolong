@@ -15,7 +15,7 @@
 <div id="DA"></div>
 
 <script>
-
+  window.addEventListener('DOMContentLoaded', () => {
   const da = document.getElementById("DA");
   let password = prompt('Password');
   const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/see', {
@@ -32,6 +32,7 @@
 
             const seeData = await seeResponse.json();
             da.innerHTML = `${seeData.message}`;
+  }
   
 </script>
 
