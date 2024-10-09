@@ -28,6 +28,7 @@
 <ul>To use it like a normal calculator, please only fill in one box.</ul>
 <ul>To solve 2-variable <b>LINEAR</b> equations, enter in <br>ax + by = c</br> form.</ul>
 <button type="button" id="troubleshoot">Troubleshoot Errors</button>
+<button type="button" id="hub">All calculators</button>
 
 <script>
   function openAndEmbed(url) {
@@ -202,6 +203,14 @@
   if (troubleshootButton) {
     troubleshootButton.addEventListener('click', () => {
       window.location.href = 'troubleshooting'; 
+    });
+  } else {
+    console.error("Troubleshoot button not found");
+  }
+    const h = document.getElementById('hub');
+  if (h) {
+    h.addEventListener('click', () => {
+      window.location.href = 'calcs'; 
     });
   } else {
     console.error("Troubleshoot button not found");
