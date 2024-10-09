@@ -17,6 +17,20 @@
 <script>
 
   const da = document.getElementById("DA");
+  let password = prompt('Password');
+  const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/see', {
+  method: 'POST',
+  headers: {
+      'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ password })
+            });
+
+            if (!seeResponse.ok) {
+              throw new Error('Failed to confirm permission');
+            }
+
+            const seeData = await seeResponse.json();
   
 </script>
 
