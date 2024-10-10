@@ -1,1 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Equation Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: blue;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            width: 100%; /* Make button full width */
+            margin-bottom: 10px; /* Space between buttons */
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        .output {
+            margin-top: 10px; /* Reduced margin */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            display: none; /* Hide initially */
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        ul {
+            margin-top: 20px;
+            color: #555;
+            font-size: 14px;
+            text-align: center; /* Centered the list */
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .troubleshoot-button {
+            margin-bottom: 10px; /* Space below troubleshoot button */
+        }
+    </style>
+</head>
+<body>
 
+<h1>Get Quadratic Info</h1>
+
+<form id="dataForm" aria-label="Calculator Form">
+    <label for="name">Equation:</label>
+    <textarea id="name" name="name" aria-label="Equation 1" placeholder="Enter in the form ax² + bx + c"></textarea>
+    <input type="hidden" id="d" name="d" value="1">
+    <button type="submit">Calculate!</button>
+</form>
+
+<div id="DA" class="output"></div>
+<div id="idk" class="output"></div>
+
+<ul>Please input the equation in the format <strong>ax² + bx + c</strong> (even if b and c are 0).</ul>
+
+<div class="button-container">
+    <button type="button" id="troubleshoot" class="troubleshoot-button">Troubleshoot Errors</button>
+    <button type="button" id="hub">All Calculators</button>
+</div>
+
+<script>
+    const dataForm = document.getElementById("dataForm");
+    const da = document.getElementById("DA");
+    const idk = document.getElementById("idk");
+
+    dataForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        idk.innerHTML = "";
+        const name = document.getElementById("name").value;
+        da.style.display = "block"; // Show output area
+        da.innerHTML = `Calculating...`;
+
+        const links = ['https://meeatchicken.pythonanywhere.com/get/quad-info'];
+
+        try {
+            const responses = await Promise.all(links.map(link =>
+                fetch(link, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name })
+                })
+            ));
+
+            const successfulResponse = responses.find(response => response.ok);
+            if (!successfulResponse) {
+                throw new Error('No successful responses from servers');
+            }
+
+            const data = await successfulResponse.json();
+            const out = data.message;
+            da.innerHTML = `Output: ${out}`;
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+            idk.innerHTML = `Error occurred`;
+            da.innerHTML = `Message: ${error.message}`;
+        }
+    });
+
+    const troubleshootButton = document.getElementById('troubleshoot');
+    troubleshootButton.addEventListener('click', () => {
+        window.location.href = 'https://clalc.netlify.app/troubleshooting'; 
+    });
+
+    const hubButton = document.getElementById('hub');
+    hubButton.addEventListener('click', () => {
+        window.location.href = 'https://clalc.netlify.app/calcs'; 
+    });
+</script>
+
+</body>
+</html>
