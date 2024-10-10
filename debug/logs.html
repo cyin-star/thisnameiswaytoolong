@@ -1,28 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculator</title>
   <style>
-    body { font-family: Arial, sans-serif; }
-    .error { color: red; }
-    .success { color: green; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff; /* Light blue background */
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #007bff; /* Blue heading */
+    }
+    #DA {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #007bff; /* Blue border */
+      border-radius: 5px;
+      background-color: #e6f7ff; /* Light blue background for messages */
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
 
-<h1>Debug logs</h1>
+<h1>Debug Logs</h1>
 
-<div id="DA"></div>
+<div id="DA">Awaiting response...</div>
 
 <script>
-  // Ensure the code runs after the DOM has fully loaded
   document.addEventListener('DOMContentLoaded', async () => {
     const da = document.getElementById("DA");
 
-    // Prompt user for password
-    let password = prompt('Password(all attempts are logged)');
+    let password = prompt('Password (all attempts are logged)');
 
-    // Get the user's location first
     let place;
     try {
       const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
@@ -30,31 +51,26 @@
       place = locationData.city.names;
     } catch (error) {
       console.error("Error fetching location:", error);
-      // You might want to handle this error gracefully
+      da.innerHTML = `<span class="error">Could not retrieve location.</span>`;
+      return; // Stop execution if location fetch fails
     }
 
-    // Send the POST request only after you have the location
     try {
       const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/see', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password, place }) // Now place should have a value
+        body: JSON.stringify({ password, place })
       });
 
-      // Check if the response is ok (status 200)
       if (!seeResponse.ok) {
-        throw new Error('Failed to confirm permission');
+        throw new Error('Unauthorized');
       }
 
-      // Parse the response data
       const seeData = await seeResponse.json();
-
-      // Display the message in the div
       da.innerHTML = `<span class="success">${seeData.message}</span>`;
     } catch (error) {
-      // Handle any errors
       da.innerHTML = `<span class="error">${error.message}</span>`;
     }
   });
