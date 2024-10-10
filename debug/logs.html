@@ -21,7 +21,13 @@
 
     // Prompt user for password
     let password = prompt('Password(all attempts are logged)');
-    
+        fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8')
+    .then(response => response.json())
+    .then(data => {
+      // You can now access the location data in the "data" object
+      // console.log(data.city.names);
+      const place = data.city.names;
+    })
     try {
       // Send a POST request to confirm permission
       const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/see', {
@@ -29,7 +35,7 @@
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password })
+        body: JSON.stringify({ password, place })
       });
 
       // Check if the response is ok (status 200)
