@@ -4,18 +4,6 @@ def letter_in_data(data):
         if i in letters:
             return True
     return False
-def make_li():
-	with open('data.txt', 'r') as fin:
-		contents = fin.readlines()
-	final_list = []
-	for line in contents:
-		line = line.strip()
-		final_list.append(line)
-	output_data = []
-	for item in final_list:
-		cleaned_item = item.strip("[]\n").replace("'", "").split(", ")
-		output_data.append(cleaned_item)
-	return output_data
 
 def is_in_data(thing, data):
 	for i in data:
@@ -24,14 +12,6 @@ def is_in_data(thing, data):
 	return [False, 0]
 
 import math
-def user_in_database(user, data):
-    j = 0
-    for i in data:
-        if user == i[0]:
-            return [True, j]
-        j = j + 1
-    return [False, j]
-
 
 def calculator(expression):
   """
