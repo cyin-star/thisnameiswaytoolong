@@ -5,6 +5,39 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Troubleshooting Calculator Errors</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f0f8ff; /* Light blue background */
+			color: #333;
+			margin: 0;
+			padding: 20px;
+		}
+		h1 {
+			color: #003366; /* Dark blue for headings */
+		}
+		h3 {
+			color: #00509e; /* Medium blue for subheadings */
+		}
+		p {
+			background-color: #e6f7ff; /* Light blue for paragraphs */
+			border-left: 4px solid #00509e; /* Dark blue border */
+			padding: 10px;
+			margin: 10px 0;
+		}
+		#back {
+			background-color: #00509e; /* Dark blue button */
+			color: white;
+			border: none;
+			padding: 10px 15px;
+			cursor: pointer;
+			font-size: 16px;
+			border-radius: 5px;
+		}
+		#back:hover {
+			background-color: #003366; /* Darker blue on hover */
+		}
+	</style>
 </head>
 <body>
 	<h1>Troubleshooting</h1>
@@ -13,19 +46,18 @@
 	<h3>Calculator Gives: Attempted Division by 0</h3>
 	<p>Reason: Double check you did not try to divide by 0</p>
 	<h3>Calculator Gives: 2-variable equations must be entered in ax+by=c form</h3>
-	<p>Please enter the equation in that form, <b>ab+by=c, even is a or b is 1 or 0</b></p>
+	<p>Please enter the equation in that form, <b>ax + by = c, even if a or b is 1 or 0</b></p>
 
-	<button type = "button" id = "back">Back to calculator</button>
+	<button type="button" id="back">Back to calculator</button>
 	<script>
 		const troubleshootButton = document.getElementById('back');
-    		if (troubleshootButton) { // Check if the button exists
-      			troubleshootButton.addEventListener('click', () => {
-        		window.location.href = 'https://clalc.netlify.app'; 
-      		});
-    		} 
-		else {
-      			console.error("Troubleshoot button not found");
-    		}
+		if (troubleshootButton) { // Check if the button exists
+			troubleshootButton.addEventListener('click', () => {
+				window.location.href = 'https://clalc.netlify.app'; 
+			});
+		} else {
+			console.error("Troubleshoot button not found");
+		}
 	</script>
 </body>
 </html>
