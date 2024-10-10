@@ -4,46 +4,67 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Calcs</title>
+	<title>Calculator Menu</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+		.container {
+			background: white;
+		 padding: 20px;
+		 border-radius: 8px;
+		 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		 text-align: center;
+		}
+		button {
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			padding: 10px 15px;
+			margin: 10px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+		button:hover {
+			background-color: #0056b3;
+		}
+	</style>
 </head>
 <body>
 
-	<button type = "button" id = "back">Calculator(2 variable linear/expressions)</button>
-  <button type = "button" id = "q">2 quadiatic equations</button>
-	 <button type = "button" id = "q1">Linear-quad-intersection</button>
-<button type = "button" id = "q2">Get info about a quad equation</button>
-<button type = "button" id = "d1">Debug logs(ONLY FOR ME!)</button>
+	<div class="container">
+		<h1>Calculator Menu</h1>
+		<button type="button" id="back">Calculator (2 Variable Linear/Expressions)</button>
+		<button type="button" id="q">2 Quadratic Equations</button>
+		<button type="button" id="q1">Linear-Quad Intersection</button>
+		<button type="button" id="q2">Get Info About a Quad Equation</button>
+		<button type="button" id="d1">Debug Logs (ONLY FOR ME!)</button>
+	</div>
+
 	<script>
-		const troubleshootButton = document.getElementById('back');
-    		if (troubleshootButton) { // Check if the button exists
-      			troubleshootButton.addEventListener('click', () => {
-        		window.location.href = 'https://clalc.netlify.app'; 
-      		});
-    		} 
-    		const qu = document.getElementById('q');
-    		if (qu) { // Check if the button exists
-      			qu.addEventListener('click', () => {
-        		window.location.href = 'https://clalc.netlify.app/quad'; 
-      		});
-    		} 
-		    		const qu1 = document.getElementById('q1');
-    		if (qu1) { // Check if the button exists
-      			qu1.addEventListener('click', () => {
-        		window.location.href = 'https://clalc.netlify.app/quad/linear'; 
-      		});
-    		} 
-		const qu2 = document.getElementById('q2');
-		if (qu2) { // Check if the button exists
-      			qu2.addEventListener('click', () => {
-        		window.location.href = 'https://clalc.netlify.app/quad/get-info'; 
-      		});
-    		} 
-		const d1 = document.getElementById('d1');
-		if (d1) { // Check if the button exists
-      			d1.addEventListener('click', () => {
-        		window.location.href = 'https://clalc.netlify.app/debug/logs'; 
-      		});
-    		} 
+		const buttons = {
+			back: 'https://clalc.netlify.app',
+			q: 'https://clalc.netlify.app/quad',
+			q1: 'https://clalc.netlify.app/quad/linear',
+			q2: 'https://clalc.netlify.app/quad/get-info',
+			d1: 'https://clalc.netlify.app/debug/logs'
+		};
+
+		Object.keys(buttons).forEach(id => {
+			const button = document.getElementById(id);
+			if (button) {
+				button.addEventListener('click', () => {
+					window.location.href = buttons[id];
+				});
+			}
+		});
 	</script>
 </body>
 </html>
