@@ -187,33 +187,6 @@ def submit_data():
                 return jsonify({"message": "Error: Please use valid variables (x and y) in the equations."}), 200
             else:
                 return jsonify({"message": f"Error evaluating expression: {err_message}"}), 100
-@app.route('/confirm/clear', methods=['POST'])
-def clear_data():
-    data = request.get_json()
-    if hashedinfo(data['password'], '') == ['22b4b30d83b55ed336059f7051446503', 'fa1269ea0d8c8723b5734305e48f7d46']:
-        with open('data.txt', 'w') as fin:
-            fin.write('')
-        with open('data.txt', 'r') as fin:
-            single_line = fin.readlines()
-        return jsonify({"message": f"Authorized: {single_line}", "url":"pythonanywhere"}), 200
-    return jsonify({"message": 'unauthorized'}), 200
-@app.route('/confirm/see', methods=['POST'])
-def see_data():
-    data = request.get_json()
-    # return jsonify({'message': f'{data}'}), 200
-    if hashedinfo(str(data['password']), '') == ['7876fc69e05633dc67b328f0282c02c2', 'fa1269ea0d8c8723b5734305e48f7d46']:
-        with open('idk.txt', 'r') as fin:
-            single_line = fin.readlines()
-        with open('logs.txt', 'r') as fin:
-            single_line1 = fin.readlines()
-        return jsonify({"message": f'data: {single_line},         logs: {single_line1}'}), 200
-    try:
-        with open('logs.txt', 'a') as fin:
-            import datetime
-            fin.write(f"{datetime.datetime.now()}, {data['password']}, city: {data['place']} \n")
-        return jsonify({'message':'unauthorized'}), 200
-    except Exception as e:
-        return jsonify({'message':f'{e}'})
 
 #quads
 
