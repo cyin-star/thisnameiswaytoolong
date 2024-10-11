@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Calculator Menu - BETA ONES</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+		.container {
+			background: white;
+		 padding: 20px;
+		 border-radius: 8px;
+		 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		 text-align: center;
+		}
+		button {
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			padding: 10px 15px;
+			margin: 10px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+		button:hover {
+			background-color: #0056b3;
+		}
+	</style>
+</head>
+<body>
 
+	<div class="container">
+		<h1>Calculator Menu</h1>
+		<button type="button" id="s1">Statistics1</button>
+	</div>
+
+	<script>
+		const buttons = {
+			s1: 'https://clalc.netlify.app/stats/main'
+		};
+
+		Object.keys(buttons).forEach(id => {
+			const button = document.getElementById(id);
+			if (button) {
+				button.addEventListener('click', () => {
+					window.location.href = buttons[id];
+				});
+			}
+		});
+	</script>
+</body>
+</html>
