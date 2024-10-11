@@ -197,17 +197,6 @@ def grapg():
 
 
 
-@app.route('/debug', methods=['POST'])
-def se_data():
-    data = request.get_json()
-    if hashedinfo(data['password'], '') == ['7876fc69e05633dc67b328f0282c02c2', 'fa1269ea0d8c8723b5734305e48f7d46']:
-        import code as c
-        return jsonify({"message": f'Source code: {c.code()}'}), 200
-    return jsonify({'message':'unauthorized'}), 200
-
-
-
-
 
 # # This block is for running your Flask app
 # if __name__ == '__main__':
