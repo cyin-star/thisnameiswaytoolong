@@ -109,26 +109,6 @@ CORS(app)
 def submit_data():
     data = request.get_json()
     u_and_p = [data['name'], data['message']]
-    try:
-        a = data['url']
-    except:
-        a = 'idk'
-    if a != "idk":
-        try:
-            if u_and_p == ['','']:
-                return jsonify({"message": f"NO TROLLING ALLOWED, MUST ENTER SOMETHING!", "url":"pythonanywhere"}), 200
-            u_and_p.append(data['url'])
-            with open('idk.txt', 'a') as fin:
-                fin.write(f"{u_and_p}\n") #ONLY FOR RECOVERY AND FOR ME TO CHECK FOR TROLLERS
-            a = encode(u_and_p)
-            with open('data.txt', 'a') as fin:
-                fin.write(f"{a}\n")
-            with open('data.txt', 'r') as fin:
-                contents = fin.readlines()  # Read all lines
-                single_line = ''.join(contents)  # Join lines into a single string
-            return jsonify({"message": f"Stored!", "url":"pythonanywhere"}), 200
-        except:
-            return jsonify({"message": "ERROR", "url":"pythonanywhere"}), 200
     e1  = u_and_p[0]
     equation1 = e1
     e2 = u_and_p[1]
