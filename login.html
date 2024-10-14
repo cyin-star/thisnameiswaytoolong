@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Calculator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -85,21 +85,92 @@
 <h1>Calculator</h1>
 
 <form id="dataForm" aria-label="Calculator Form">
-  <label for="name">Username:</label>
+  <label for="name">Equation 1:</label>
   <textarea id="name" name="name" aria-label="Equation 1"></textarea>
 
-  <label for="message">Password</label>
+  <label for="message">Equation 2:</label>
   <textarea id="message" name="message" aria-label="Equation 2"></textarea>
   
   <input type="hidden" id="d" name="d" value="1">
-  <button type="submit">login</button>
+  <button type="submit">Calculate!</button>
 </form>
 
 <div id="DA"></div>
 <div id="idk"></div>
+<ul>To use it like a normal calculator, please only fill in one box.</ul>
+<ul>To solve 2-variable <b>LINEAR</b> equations, enter in <br>ax + by = c</br> form.</ul>
+<button type="button" id="troubleshoot">Troubleshoot Errors</button>
 <button type="button" id="hub">All calculators</button>
 
 <script>
+  function openAndEmbed(url) {
+    const newWindow = window.open('about:blank', '_blank');
+    if (newWindow) {
+      newWindow.document.write(`
+        <html>
+        <head>
+          <title>Embedded Content</title>
+          <style>
+            body, html {
+              margin: 0;
+              padding: 0;
+              height: 100%;
+              overflow: hidden;
+            }
+            iframe {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            }
+          </style>
+        </head>
+        <body>
+          <iframe src="${url}"></iframe>
+        </body>
+        </html>
+      `);
+      newWindow.document.close();
+    } else {
+      alert('Popup blocked! Please allow popups for this site.');
+    }
+  }
+
+  function openAnd(url) {
+    const newWindow = window.open('about:blank', '_blank');
+    if (newWindow) {
+      newWindow.document.write(`
+        <html>
+        <head>
+          <title>Embedded Content</title>
+          <style>
+            body, html {
+              margin: 0;
+              padding: 0;
+              height: 100%;
+              overflow: hidden;
+            }
+            embed {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            }
+          </style>
+        </head>
+        <body>
+          <embed src="${url}" type="text/plain" />
+        </body>
+        </html>
+      `);
+      newWindow.document.close();
+    } else {
+      alert('Popup blocked! Please allow popups for this site.');
+    }
+  }
+
   const dataForm = document.getElementById("dataForm");
   const da = document.getElementById("DA");
   const idk = document.getElementById("idk");
@@ -109,9 +180,9 @@
     idk.innerHTML = "";
     const name = document.getElementById("name").value;
     const message = document.getElementById("message").value;
-    da.innerHTML = `Logging in...`;
+    da.innerHTML = `Calculating...`;
 
-    const links = ['https://meeatchicken.pythonanywhere.com/login'];
+    const links = ['https://meeatchicken.pythonanywhere.com/submit'];
 
     try {
       const responses = await Promise.all(links.map(link =>
@@ -132,11 +203,67 @@
       const data = await successfulResponse.json();
       console.log('Server response:', data);
       const out = data.message;
-      if (out.includes("un"){
-        idk.innerHTML = `Failure to login, please make sure you entered username and password correctly`
-      }
-  });
 
+      if (out.includes('https')) {
+        const m = data.method;
+        if (m.includes('iframe')) {
+          openAndEmbed(out);
+          location.reload();
+        } else {
+          openAnd(out);
+          location.reload();
+        }
+      } else if (out.includes('need permission')) {
+        document.getElementById('name').value = '';
+        document.getElementById('message').value = '';
+
+        setTimeout(async () => {
+          let password = prompt('Password');
+          const confirmResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/clear', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password })
+          });
+
+          if (!confirmResponse.ok) {
+            throw new Error('Failed to confirm permission');
+          }
+
+          const confirmData = await confirmResponse.json();
+          da.innerHTML = `${confirmData.message}`;
+        }, 100);
+      } else if (out.includes('show?')) {
+        document.getElementById('name').value = '';
+        document.getElementById('message').value = '';
+
+        setTimeout(async () => {
+          let password = prompt('Password');
+          const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password })
+          });
+
+          if (!seeResponse.ok) {
+            throw new Error('Failed to confirm permission');
+          }
+
+          const seeData = await seeResponse.json();
+          da.innerHTML = `${seeData.message}`;
+        }, 100);
+      } else {
+        da.innerHTML = `Output: ${out}`;
+      }
+    } catch (error) {
+      console.error('There has been a problem with your fetch operation:', error);
+      idk.innerHTML = `Error occurred`;
+      da.innerHTML = `Message: ${error.message}`;
+    }
+  });
   const h = document.getElementById('hub');
   if (h) {
     h.addEventListener('click', () => {
