@@ -1,1 +1,1 @@
-calculate harmonic mean
+calculate harmonic mean - Done
