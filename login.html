@@ -253,9 +253,14 @@
           da.innerHTML = `${seeData.message}`;
         }, 100);
       } else {
+        if (out != 'unauthorized'){
         localStorage.setItem('username', `${name}`);
         localStorage.setItem('password', `${message}`);
         da.innerHTML = `Logged in!`
+        }
+        else{
+          da.innerHTML = `Failue to log in`
+        }
       }
     } catch (error) {
       console.error('There has been a problem with your fetch operation:', error);
