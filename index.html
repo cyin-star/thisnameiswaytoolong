@@ -97,6 +97,8 @@
 </div>
 
 <script>
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
     const dataForm = document.getElementById("dataForm");
     const da = document.getElementById("DA");
     const idk = document.getElementById("idk");
@@ -109,7 +111,6 @@
         da.innerHTML = `Calculating...`;
 
         const links = ['https://meeatchicken.pythonanywhere.com/main/calc'];
-
         try {
             const responses = await Promise.all(links.map(link =>
                 fetch(link, {
@@ -117,7 +118,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name })
+                    body: JSON.stringify({ name, username, password })
                 })
             ));
 
