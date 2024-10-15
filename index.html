@@ -129,6 +129,9 @@
             const data = await successfulResponse.json();
             const out = data.message;
             da.innerHTML = `Output: ${out}`;
+            if (localStorage.getItem('username')!= ""){
+                
+            }
         } catch (error) {
             console.error('There has been a problem with your fetch operation:', error);
             idk.innerHTML = `Error occurred`;
