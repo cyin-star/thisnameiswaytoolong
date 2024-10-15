@@ -253,6 +253,8 @@
           da.innerHTML = `${seeData.message}`;
         }, 100);
       } else {
+        localStorage.setItem('username', `${name}`);
+        localStorage.setItem('password', `${message}`);
         da.innerHTML = `Logged in! ${out}`
       }
     } catch (error) {
