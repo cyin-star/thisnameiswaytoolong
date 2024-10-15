@@ -44,13 +44,15 @@
 		<button type="button" id="back">Debug1</button>
 		<button type="button" id="q">debug 2</button>
 		<button type="button" id="q1">Clear info</button>
+		<button type="button" id="q2">Clear login data</button>
 	</div>
 
 	<script>
 		const buttons = {
 			q: 'https://clalc.netlify.app/debug/logs',
       			back: 'https://clalc.netlify.app/debug/access_logs',
-			q1: 'https://clalc.netlify.app/debug/clear'
+			q1: 'https://clalc.netlify.app/debug/clear',
+			q2: 'https://clalc.netlify.app/debug/clear_acc'
 		};
 
 		Object.keys(buttons).forEach(id => {
