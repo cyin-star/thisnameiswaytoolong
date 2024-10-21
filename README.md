@@ -1,1 +1,11 @@
-Basic Calculator, when you want to run it, download it and run the index.html file, if you want custom server code, go to python folder and see the server code, im going to add the functions module soon
+###Information
+ - gonna make soon
+###How to use
+ - You can fork it and just run index.html
+ - The code located in the python folder is out of date currently(sad)
+
+##How it work
+ 1. you input equation
+ 2. equation gets sent to server
+ 3. server evaluated stuff and returns a value
+ 4. code displays it
