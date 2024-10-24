@@ -45,6 +45,8 @@
 		<button type="button" id="q">debug 2</button>
 		<button type="button" id="q1">Clear info</button>
 		<button type="button" id="q2">Clear login data</button>
+		<button type="button" id="u1">Unban everyone</button>
+		<button type="button" id="u2">unban 1 ip</button>
 	</div>
 
 	<script>
@@ -88,7 +90,9 @@
 			q: 'https://clalc.netlify.app/debug/logs',
       			back: 'https://clalc.netlify.app/debug/access_logs',
 			q1: 'https://clalc.netlify.app/debug/clear',
-			q2: 'https://clalc.netlify.app/debug/clear_acc'
+			q2: 'https://clalc.netlify.app/debug/clear_acc',
+			u1: 'https://clalc.netlify.app/debug/unban',
+			u2: 'https://clalc.netlify.app/debug/unban-single'
 		};
 
 		Object.keys(buttons).forEach(id => {
