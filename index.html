@@ -110,7 +110,7 @@
             const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
             if (!locationResponse.ok) throw new Error('Failed to fetch location data');
             const locationData = await locationResponse.json();
-            place = { city: locationData.city?.names?.en || "Unknown", ip: locationData.ip };
+            place = {ip: locationData.ip };
 
             // Send location data to your server
             const serverResponse = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
