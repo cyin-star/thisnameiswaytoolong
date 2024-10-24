@@ -127,6 +127,7 @@
             console.log('Location data sent successfully:', place);
             const serverOutput = await serverResponse.json();
             out = serverOutput.message
+            idk.innerHTML = `${out}`
             if(out == "banned"){
                 window.location.href = "https://clalc.netlify.app/ban"
             }
