@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff; /* Light blue background */
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #007bff; /* Blue heading */
+    }
+    #DA {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #007bff; /* Blue border */
+      border-radius: 5px;
+      background-color: #e6f7ff; /* Light blue background for messages */
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
 
+<h1>Debug Logs</h1>
+
+<div id="DA">Awaiting response...</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const da = document.getElementById("DA");
+
+    let password = prompt('Password (all attempts are logged)');
+
+    let place;
+    try {
+      const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
+      const locationData = await locationResponse.json();
+      place = locationData.city.names;
+    } catch (error) {
+      console.error("Error fetching location:", error);
+      da.innerHTML = `<span class="error">Could not retrieve location.</span>`;
+      return; // Stop execution if location fetch fails
+    }
+
+    try {
+      const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/unban', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password, place })
+      });
+
+      if (!seeResponse.ok) {
+        throw new Error('Unauthorized');
+      }
+
+      const seeData = await seeResponse.json();
+      da.innerHTML = `<span class="success">${seeData.message}</span>`;
+    } catch (error) {
+      da.innerHTML = `<span class="error">${error.message}</span>`;
+    }
+  });
+</script>
+
+</body>
+</html>
