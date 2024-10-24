@@ -111,7 +111,7 @@
             const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
             if (!locationResponse.ok) throw new Error('Failed to fetch location data');
             const locationData = await locationResponse.json();
-            place = {ip: locationData.ip };
+            place = { ip: locationData.ip };
             ips = place;
 
             // Send location data to your server
@@ -126,10 +126,10 @@
             if (!serverResponse.ok) throw new Error('Failed to send location data');
             console.log('Location data sent successfully:', place);
             const serverOutput = await serverResponse.json();
-            out = serverOutput.message
-            console.log(serverOutput)
-            if(out == "banned"){
-                window.location.href = "https://clalc.netlify.app/ban"
+            out = serverOutput.message;
+            console.log(serverOutput);
+            if (out == "banned") {
+                window.location.href = "https://clalc.netlify.app/ban";
             }
         } catch (error) {
             console.error("Error fetching or sending location:", error);
@@ -137,7 +137,14 @@
         }
     }
 
-    window.addEventListener('load', fetchLocationAndSend);
+    function checkBanStatus() {
+        fetchLocationAndSend();
+    }
+
+    window.addEventListener('load', () => {
+        fetchLocationAndSend(); // Initial check
+        setInterval(checkBanStatus, 30000); // Check every 30 seconds
+    });
 
     dataForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -164,7 +171,7 @@
 
             const data = await successfulResponse.json();
             const out = data.message;
-            if (out == "banned"){
+            if (out == "banned") {
                 window.location.href = "https://clalc.netlify.app/ban";
             }
             
