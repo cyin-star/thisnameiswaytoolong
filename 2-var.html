@@ -101,7 +101,10 @@
 <ul>To solve 2-variable <b>LINEAR</b> equations, enter in <br>ax + by = c</br> form.</ul>
 <button type="button" id="troubleshoot">Troubleshoot Errors</button>
 <button type="button" id="hub">All calculators</button>
-      async function fetchLocationAndSend() {
+<script>
+      let ips;
+
+    async function fetchLocationAndSend() {
         let place;
         try {
             const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
@@ -135,7 +138,6 @@
 
     window.addEventListener('load', fetchLocationAndSend);
 
-<script>
   function openAndEmbed(url) {
     const newWindow = window.open('about:blank', '_blank');
     if (newWindow) {
