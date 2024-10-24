@@ -14,6 +14,7 @@
 <div id = 'ipa'></div>
 
 	<script>
+		const idk = document.getElementById("ipa");
 		      let ips;
 
     async function fetchLocationAndSend() {
@@ -24,7 +25,7 @@
             const locationData = await locationResponse.json();
             place = {ip: locationData.ip };
             ips = place;
-		idk = 
+		idk.innerHTML = `${ips}`
 
             // Send location data to your server
             const serverResponse = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
