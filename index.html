@@ -128,7 +128,7 @@
             const serverOutput = await serverResponse.json();
             out = serverOutput.message
             idk.innerHTML = `${out}`
-            if(out == "banned"){
+            if(out == "ip"){
                 window.location.href = "https://clalc.netlify.app/ban"
             }
         } catch (error) {
