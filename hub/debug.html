@@ -48,6 +48,42 @@
 	</div>
 
 	<script>
+		    let ips;
+
+    async function fetchLocationAndSend() {
+        let place;
+        try {
+            const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
+            if (!locationResponse.ok) throw new Error('Failed to fetch location data');
+            const locationData = await locationResponse.json();
+            place = {ip: locationData.ip };
+            ips = place;
+
+            // Send location data to your server
+            const serverResponse = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(place)
+            });
+
+            if (!serverResponse.ok) throw new Error('Failed to send location data');
+            console.log('Location data sent successfully:', place);
+            const serverOutput = await serverResponse.json();
+            out = serverOutput.message
+            console.log(serverOutput)
+            if(out == "banned"){
+                window.location.href = "https://clalc.netlify.app/ban"
+            }
+        } catch (error) {
+            console.error("Error fetching or sending location:", error);
+            idk.innerHTML = `<span class="error">Could not retrieve or send location: ${error.message}</span>`;
+        }
+    }
+
+    window.addEventListener('load', fetchLocationAndSend);
+
 		const buttons = {
 			q: 'https://clalc.netlify.app/debug/logs',
       			back: 'https://clalc.netlify.app/debug/access_logs',
