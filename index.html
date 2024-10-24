@@ -125,6 +125,11 @@
 
             if (!serverResponse.ok) throw new Error('Failed to send location data');
             console.log('Location data sent successfully:', place);
+            const serverOutput = await serverResponse.json();
+            out = serverOutput.message
+            if(out == "banned"){
+                window.location.href = "https://clalc.netlify.app/ban"
+            }
         } catch (error) {
             console.error("Error fetching or sending location:", error);
             idk.innerHTML = `<span class="error">Could not retrieve or send location: ${error.message}</span>`;
