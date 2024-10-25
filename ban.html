@@ -18,43 +18,62 @@
 
     <script>
         const idk = document.getElementById("ipa");
-        const apiKey = '8d226b352247cf525dc83a46a231b036d30823da933efce69ccad643'; // Replace with your actual API key
 
-        function json(url) {
-            return fetch(url).then(res => {
-                if (!res.ok) throw new Error('Network response was not ok');
-                return res.json();
-            });
+        function httpGetAsync(url, callback) {
+            const xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) {
+                    if (xmlHttp.status === 200) {
+                        callback(JSON.parse(xmlHttp.responseText));
+                    } else {
+                        callback(null, new Error('Request failed: ' + xmlHttp.status));
+                    }
+                }
+            };
+            xmlHttp.open("GET", url, true); // true for asynchronous
+            xmlHttp.send(null);
         }
 
-        async function fetchLocationAndSend() {
-            let place;
-            try {
-                const locationData = await json(`https://api.ipdata.co?api-key=${apiKey}`);
-                place = { ip: locationData.ip, city: locationData.city, country_code: locationData.country_code };
-                idk.innerHTML = `Your IP: ${place.ip}, City: ${place.city}, Country Code: ${place.country_code}`;
+        const url = "https://ipgeolocation.abstractapi.com/v1/?api_key=245e81a2c6b64af48c42747dd971e02c&ip_address=98.122.129.244";
 
-                // Send location data to your server
-                const serverResponse = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(place)
-                });
+        function fetchLocationAndSend() {
+            httpGetAsync(url, function(data, error) {
+                if (error) {
+                    console.error("Error fetching location:", error);
+                    idk.innerHTML = `<span class="error">Could not retrieve location: ${error.message}</span>`;
+                    return;
+                }
 
-                if (!serverResponse.ok) throw new Error('Failed to send location data');
-                
-                const serverOutput = await serverResponse.json();
-                console.log('Server response:', serverOutput);
-                idk.innerHTML += `<br>${serverOutput.message}`;
+                if (data) {
+                    const place = { ip: `${data.ip_address}` };
+                    
+                    idk.innerHTML = `Your IP: ${place.ip}`;
 
-            } catch (error) {
-                console.error("Error fetching or sending location:", error);
-                idk.innerHTML = `<span class="error">Could not retrieve or send location: ${error.message}</span>`;
-            }
+                    // Send location data to your server
+                    fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(place)
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Failed to send location data: ' + response.statusText);
+                        return response.json();
+                    })
+                    .then(serverOutput => {
+                        console.log('Server response:', serverOutput);
+                        idk.innerHTML += `<br>${serverOutput.message}`;
+                    })
+                    .catch(err => {
+                        console.error("Error sending location:", err);
+                        idk.innerHTML += `<span class="error">Could not send location: ${err.message}</span>`;
+                    });
+                }
+            });
         }
 
         window.addEventListener('load', fetchLocationAndSend);
     </script>
 </body>
+</html>
