@@ -22,7 +22,7 @@
         async function fetchLocationAndSend() {
             let place;
             try {
-                const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
+                const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=d7ac1958e7574799ba2c0f98f84d96fd');
                 if (!locationResponse.ok) throw new Error('Failed to fetch location data');
                 
                 const locationData = await locationResponse.json();
