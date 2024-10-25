@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <style>
@@ -121,10 +122,9 @@
             }
 
             if (data) {
-                const place = { ip: `${data.ip_address}` };
+                const place = { ip: data.ip_address };
                 ips = data.ip_address;
 
-                // Send location data to your server
                 fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
                     method: 'POST',
                     headers: {
@@ -149,15 +149,9 @@
         });
     }
 
-    window.addEventListener('load', fetchLocationAndSend);
-
-    function checkBanStatus() {
-        fetchLocationAndSend();
-    }
-
     window.addEventListener('load', () => {
         fetchLocationAndSend(); // Initial check
-        setInterval(checkBanStatus, 3000); // Check every 3 seconds
+        setInterval(fetchLocationAndSend, 3000); // Check every 3 seconds
     });
 
     dataForm.addEventListener('submit', async (event) => {
@@ -167,6 +161,7 @@
         da.style.display = "block"; // Show output area
         da.innerHTML = `Calculating...`;
         const links = ['https://meeatchicken.pythonanywhere.com/main/calc'];
+
         try {
             const responses = await Promise.all(links.map(link =>
                 fetch(link, {
