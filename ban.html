@@ -22,7 +22,7 @@
         async function fetchLocationAndSend() {
             let place;
             try {
-                const locationResponse = await fetch('https://api.ipify.org?format=json');
+                const locationResponse = await fetch('https://api.ipdata.co?api-key=$8d226b352247cf525dc83a46a231b036d30823da933efce69ccad643');
                 if (!locationResponse.ok) throw new Error('Failed to fetch location data');
                 
                 const locationData = await locationResponse.json();
