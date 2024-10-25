@@ -22,7 +22,7 @@
         async function fetchLocationAndSend() {
             let place;
             try {
-                const locationResponse = await fetch('https://ipgeolocation.abstractapi.com/v1/?api_key=245e81a2c6b64af48c42747dd971e02c&ip_address=98.122.129.244');
+                const locationResponse = await fetch('https://api.ipify.org?format=json');
                 if (!locationResponse.ok) throw new Error('Failed to fetch location data');
                 
                 const locationData = await locationResponse.json();
