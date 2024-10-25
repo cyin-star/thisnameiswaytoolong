@@ -117,7 +117,6 @@
         httpGetAsync(url, function(data, error) {
             if (error) {
                 console.error("Error fetching location:", error);
-                idk.innerHTML = `<span class="error">Could not retrieve location: ${error.message}</span>`;
                 return;
             }
 
