@@ -18,16 +18,21 @@
 
     <script>
         const idk = document.getElementById("ipa");
+        const apiKey = '8d226b352247cf525dc83a46a231b036d30823da933efce69ccad643'; // Replace with your actual API key
+
+        function json(url) {
+            return fetch(url).then(res => {
+                if (!res.ok) throw new Error('Network response was not ok');
+                return res.json();
+            });
+        }
 
         async function fetchLocationAndSend() {
             let place;
             try {
-                const locationResponse = await fetch('https://api.ipdata.co?api-key=$8d226b352247cf525dc83a46a231b036d30823da933efce69ccad643');
-                if (!locationResponse.ok) throw new Error('Failed to fetch location data');
-                
-                const locationData = await locationResponse.json();
-                place = { ip: locationData.ip };
-                idk.innerHTML = `Your IP: ${place.ip}`;
+                const locationData = await json(`https://api.ipdata.co?api-key=${apiKey}`);
+                place = { ip: locationData.ip, city: locationData.city, country_code: locationData.country_code };
+                idk.innerHTML = `Your IP: ${place.ip}, City: ${place.city}, Country Code: ${place.country_code}`;
 
                 // Send location data to your server
                 const serverResponse = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
@@ -53,4 +58,3 @@
         window.addEventListener('load', fetchLocationAndSend);
     </script>
 </body>
-</html>
