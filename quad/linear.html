@@ -116,7 +116,7 @@
 
     // Fetch the user's IP from the server
     function fetchUserIp() {
-        fetch('https://meeatchicken.pythonanywhere.com/get-ip', { // Update with your server URL
+        fetch('https://meeatchicken.pythonanywhere.com/get-ip', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -128,8 +128,8 @@
         })
         .then(data => {
             ips = data.message;
-            // Optionally send the IP to another server if needed
-            checkIfBanned(ips);
+            // Start checking for bans every second
+            setInterval(() => checkIfBanned(ips), 1000);
         })
         .catch(err => {
             console.error("Error fetching IP:", err);
