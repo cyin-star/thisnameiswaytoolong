@@ -19,61 +19,54 @@
     <script>
         const idk = document.getElementById("ipa");
 
-        function httpGetAsync(url, callback) {
-            const xmlHttp = new XMLHttpRequest();
-            xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState === 4) {
-                    if (xmlHttp.status === 200) {
-                        callback(JSON.parse(xmlHttp.responseText));
-                    } else {
-                        callback(null, new Error('Request failed: ' + xmlHttp.status));
-                    }
+        // Update this URL to point to your Flask server
+        const flaskServerUrl = 'https://meeatchicken.pythonanywhere.com/get-ip'; // Change to your server URL
+
+        // Function to get the user's IP address from the server
+        function fetchUserIp() {
+            fetch(flaskServerUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            };
-            xmlHttp.open("GET", url, true); // true for asynchronous
-            xmlHttp.send(null);
-        }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch IP: ' + response.statusText);
+                return response.json();
+            })
+            .then(data => {
+                const userIp = data.message;
+                idk.innerHTML = `Your IP: ${userIp}`;
 
-        const url = "https://ipgeolocation.abstractapi.com/v1/?api_key=245e81a2c6b64af48c42747dd971e02c&ip_address=98.122.129.244";
-
-        function fetchLocationAndSend() {
-            httpGetAsync(url, function(data, error) {
-                if (error) {
-                    console.error("Error fetching location:", error);
-                    idk.innerHTML = `<span class="error">Could not retrieve location: ${error.message}</span>`;
-                    return;
-                }
-
-                if (data) {
-                    const place = { ip: `${data.ip_address}` };
-                    
-                    idk.innerHTML = `Your IP: ${place.ip}`;
-
-                    // Send location data to your server
-                    fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(place)
-                    })
-                    .then(response => {
-                        if (!response.ok) throw new Error('Failed to send location data: ' + response.statusText);
-                        return response.json();
-                    })
-                    .then(serverOutput => {
-                        console.log('Server response:', serverOutput);
-                        idk.innerHTML += `<br>${serverOutput.message}`;
-                    })
-                    .catch(err => {
-                        console.error("Error sending location:", err);
-                        idk.innerHTML += `<span class="error">Could not send location: ${err.message}</span>`;
-                    });
-                }
+                // Optional: Send IP address to another server if needed
+                fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ip: userIp })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to send location data: ' + response.statusText);
+                    return response.json();
+                })
+                .then(serverOutput => {
+                    console.log('Server response:', serverOutput);
+                    idk.innerHTML += `<br>${serverOutput.message}`;
+                })
+                .catch(err => {
+                    console.error("Error sending location:", err);
+                    idk.innerHTML += `<span class="error">Could not send location: ${err.message}</span>`;
+                });
+            })
+            .catch(err => {
+                console.error("Error fetching IP:", err);
+                idk.innerHTML = `<span class="error">Could not retrieve IP: ${err.message}</span>`;
             });
         }
 
-        window.addEventListener('load', fetchLocationAndSend);
+        // Call the function to fetch the IP on page load
+        window.addEventListener('load', fetchUserIp);
     </script>
 </body>
 </html>
