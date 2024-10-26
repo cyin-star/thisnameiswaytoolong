@@ -55,7 +55,7 @@
                     if (serverOutput.message==='not banned'){
                         idk.innerHTML += `<br>Not banned`;    
                     }
-                    else{idk.innerHTML += `<br>Ban id:${serverOutput.id}`;}
+                    else{idk.innerHTML += `<br>Ban id: ${serverOutput.id}`;}
                 })
                 .catch(err => {
                     console.error("Error sending location:", err);
