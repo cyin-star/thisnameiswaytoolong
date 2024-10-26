@@ -100,41 +100,54 @@
     const dataForm = document.getElementById("dataForm");
     const da = document.getElementById("DA");
     const idk = document.getElementById("idk");
-        let ips;
+  let ips;
 
-    async function fetchLocationAndSend() {
-        let place;
-        try {
-            const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
-            if (!locationResponse.ok) throw new Error('Failed to fetch location data');
-            const locationData = await locationResponse.json();
-            place = {ip: locationData.ip };
-            ips = place;
-
-            // Send location data to your server
-            const serverResponse = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(place)
-            });
-
-            if (!serverResponse.ok) throw new Error('Failed to send location data');
-            console.log('Location data sent successfully:', place);
-            const serverOutput = await serverResponse.json();
-            out = serverOutput.message
-            console.log(serverOutput)
-            if(out == "banned"){
-                window.location.href = "https://clalc.netlify.app/ban"
-            }
-        } catch (error) {
-            console.error("Error fetching or sending location:", error);
-            idk.innerHTML = `<span class="error">Could not retrieve or send location: ${error.message}</span>`;
+  // Fetch the user's IP from the server
+  async function fetchUserIp() {
+    try {
+      const response = await fetch('https://meeatchicken.pythonanywhere.com/get-ip', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         }
-    }
+      });
+      
+      if (!response.ok) throw new Error('Failed to fetch IP: ' + response.statusText);
+      
+      const data = await response.json();
+      ips = data.message;
 
-    window.addEventListener('load', fetchLocationAndSend);
+      // Check if the user is banned
+      await checkIfBanned(ips);
+    } catch (err) {
+      console.error("Error fetching IP:", err);
+      idk.innerHTML = `<span class="error">Could not retrieve IP: ${err.message}</span>`;
+    }
+  }
+
+  // Check if the user is banned
+  async function checkIfBanned(ip) {
+    try {
+      const response = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ip: ip })
+      });
+      
+      if (!response.ok) throw new Error('Failed to send IP data: ' + response.statusText);
+      
+      const serverOutput = await response.json();
+      if (serverOutput.message === 'banned') {
+        window.location.href = 'https://clalc.netlify.app/ban';
+      }
+    } catch (err) {
+      console.error("Error checking ban:", err);
+    }
+  }
+
+  window.addEventListener('load', fetchUserIp); // Fetch IP on page load
 
 
     dataForm.addEventListener('submit', async (event) => {
