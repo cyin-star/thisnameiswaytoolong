@@ -119,8 +119,8 @@
       const data = await response.json();
       ips = data.message;
 
-      // Check if the user is banned
-      await checkIfBanned(ips);
+      // Start checking for bans every second
+      setInterval(() => checkIfBanned(ips), 1000);
     } catch (err) {
       console.error("Error fetching IP:", err);
       idk.innerHTML = `<span class="error">Could not retrieve IP: ${err.message}</span>`;
