@@ -96,62 +96,53 @@
     const idk = document.getElementById("idk");
     let ips;
 
-    function httpGetAsync(url, callback) {
-        const xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    callback(JSON.parse(xmlHttp.responseText));
-                } else {
-                    callback(null, new Error('Request failed: ' + xmlHttp.status));
-                }
+    // Fetch the user's IP from the server
+    function fetchUserIp() {
+        fetch('https://meeatchicken.pythonanywhere.com/get-ip', { // Update with your server URL
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             }
-        };
-        xmlHttp.open("GET", url, true);
-        xmlHttp.send(null);
-    }
-
-    const url = "https://ipgeolocation.abstractapi.com/v1/?api_key=245e81a2c6b64af48c42747dd971e02c&ip_address=98.122.129.244";
-
-    function fetchLocationAndSend() {
-        httpGetAsync(url, function(data, error) {
-            if (error) {
-                console.error("Error fetching location:", error);
-                return;
-            }
-
-            if (data) {
-                const place = { ip: data.ip_address };
-                ips = data.ip_address;
-
-                fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(place)
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to send location data: ' + response.statusText);
-                    return response.json();
-                })
-                .then(serverOutput => {
-                    console.log('Server response:', serverOutput);
-                    if (serverOutput.message === 'banned') {
-                        window.location.href = 'https://clalc.netlify.app/ban';
-                    }
-                })
-                .catch(err => {
-                    console.error("Error sending location:", err);
-                });
-            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch IP: ' + response.statusText);
+            return response.json();
+        })
+        .then(data => {
+            ips = data.message;
+            // Optionally send the IP to another server if needed
+            checkIfBanned(ips);
+        })
+        .catch(err => {
+            console.error("Error fetching IP:", err);
+            idk.innerHTML = `<span class="error">Could not retrieve IP: ${err.message}</span>`;
         });
     }
 
-    window.addEventListener('load', () => {
-        fetchLocationAndSend(); // Initial check
-        setInterval(fetchLocationAndSend, 3000); // Check every 3 seconds
-    });
+    // Check if the user is banned
+    function checkIfBanned(ip) {
+        fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ip: ip })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to send IP data: ' + response.statusText);
+            return response.json();
+        })
+        .then(serverOutput => {
+            if (serverOutput.message === 'banned') {
+                window.location.href = 'https://clalc.netlify.app/ban';
+            }
+        })
+        .catch(err => {
+            console.error("Error checking ban:", err);
+        });
+    }
+
+    window.addEventListener('load', fetchUserIp); // Fetch IP on page load
 
     dataForm.addEventListener('submit', async (event) => {
         event.preventDefault();
