@@ -52,7 +52,7 @@
                 })
                 .then(serverOutput => {
                     console.log('Server response:', serverOutput);
-                    if (serverOutput.id==='not banned'){
+                    if (serverOutput.message==='not banned'){
                         idk.innerHTML += `<br>Not banned`;    
                     }
                     else{idk.innerHTML += `<br>Ban id:${serverOutput.id}`;}
