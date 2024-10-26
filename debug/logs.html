@@ -42,11 +42,11 @@
   async function fetchLocationAndSend() {
     let place;
     try {
-      const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
+      const locationResponse = await fetch('https://clalc.netlify.app/get-ip');
       if (!locationResponse.ok) throw new Error('Failed to fetch location data');
 
       const locationData = await locationResponse.json();
-      place = { ip: locationData.ip };
+      place = { ip: locationData.message };
 
       // Send location data to your server
       const serverResponse = await fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
