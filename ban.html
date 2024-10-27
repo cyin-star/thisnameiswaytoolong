@@ -10,9 +10,21 @@
             font-family: Arial, sans-serif;
             background-color: #f0f8ff;
             color: #333;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            border: 2px solid #0056b3;
+            border-radius: 10px;
             padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
         }
 
         h1 {
@@ -42,9 +54,11 @@
     </style>
 </head>
 <body>
-    <h1>Banned</h1>
-    <p>You have been banned from using the calculator; this decision is final.</p>
-    <div id="ipa"></div>
+    <div class="container">
+        <h1>Banned</h1>
+        <p>You have been banned from using the calculator; this decision is final.</p>
+        <div id="ipa"></div>
+    </div>
 
     <script>
         const idk = document.getElementById("ipa");
