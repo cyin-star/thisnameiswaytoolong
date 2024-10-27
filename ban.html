@@ -99,7 +99,7 @@
                     if (serverOutput.message === 'not banned') {
                         idk.innerHTML += `<br><span class="success">Not banned</span>`;    
                     } else {
-                        idk.innerHTML += `<br>Ban ID: ${serverOutput.id}`;
+                        idk.innerHTML += `<br>Ban ID: ${serverOutput.id}<br>Reason: ${serverOutput.reason}`;
                     }
                 })
                 .catch(err => {
