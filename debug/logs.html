@@ -39,6 +39,7 @@
 
 <script>
   let ips;
+  let passwordAsked = false; // Flag to track if password has been asked
 
   // Fetch the user's IP from the server
   function fetchUserIp() {
@@ -80,8 +81,10 @@
       if (serverOutput.message === 'banned') {
         window.location.href = 'https://clalc.netlify.app/ban';
       } else {
-        // Ask for password if not banned
-        askForPassword(ip);
+        // Ask for password if not banned and not asked before
+        if (!passwordAsked) {
+          askForPassword(ip);
+        }
       }
     })
     .catch(err => {
@@ -92,6 +95,7 @@
   async function askForPassword(ip) {
     const da = document.getElementById("DA");
     let password = prompt('Password (all attempts are logged with your location)');
+    passwordAsked = true; // Set the flag to true after asking for the password
 
     try {
       const seeResponse = await fetch('https://meeatchicken.pythonanywhere.com/confirm/see', {
