@@ -36,7 +36,7 @@
             })
             .then(data => {
                 const userIp = data.message;
-
+                idk.innerHTML = `IP: ${userIP}`;
                 // Optional: Send IP address to another server if needed
                 fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
                     method: 'POST',
