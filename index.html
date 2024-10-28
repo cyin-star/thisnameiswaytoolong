@@ -136,6 +136,9 @@
             if (serverOutput.message === 'banned') {
                 window.location.href = 'https://clalc.netlify.app/ban';
             }
+            if (serverOutput.message === 'timedout') {
+                window.location.href = 'https://clalc.netlify.app/timeout';
+            }
         })
         .catch(err => {
             console.error("Error checking ban:", err);
