@@ -96,7 +96,7 @@
                 })
                 .then(serverOutput => {
                     console.log('Server response:', serverOutput);
-                    if (serverOutput.message === 'not banned') {
+                    if (serverOutput.message === 'not timedout') {
                         idk.innerHTML += `<br><span class="success">Not timed out</span>`;    
                     } else {
                         idk.innerHTML += `<br>timeout ID: ${serverOutput.id}<br>Reason: ${serverOutput.reason}`;
