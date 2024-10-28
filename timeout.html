@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banned</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            border: 2px solid #0056b3;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h1 {
+            color: #0056b3;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        #ipa {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Timeout</h1>
+        <p>You have been temperarly denied the permission to use this calculator</p>
+        <div id="ipa"></div>
+    </div>
+
+    <script>
+        const idk = document.getElementById("ipa");
+
+
+        const flaskServerUrl = 'https://meeatchicken.pythonanywhere.com/get-ip'; // Change to your server URL
+
+        // Function to get the user's IP address from the server
+        function fetchUserIp() {
+            fetch(flaskServerUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch IP: ' + response.statusText);
+                return response.json();
+            })
+            .then(data => {
+                const userIp = data.message;
+                idk.innerHTML = `IP: ${userIp}`;
+                
+                // Optional: Send IP address to another server if needed
+                fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ip: userIp })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to send location data: ' + response.statusText);
+                    return response.json();
+                })
+                .then(serverOutput => {
+                    console.log('Server response:', serverOutput);
+                    if (serverOutput.message === 'not banned') {
+                        idk.innerHTML += `<br><span class="success">Not timed out</span>`;    
+                    } else {
+                        idk.innerHTML += `<br>timeout ID: ${serverOutput.id}<br>Reason: ${serverOutput.reason}`;
+                    }
+                })
+                .catch(err => {
+                    console.error("Error sending location:", err);
+                    idk.innerHTML += `<span class="error">Could not send location: ${err.message}</span>`;
+                });
+            })
+            .catch(err => {
+                console.error("Error fetching IP:", err);
+                idk.innerHTML = `<span class="error">Could not retrieve IP: ${err.message}</span>`;
+            });
+        }
+
+        // Call the function to fetch the IP on page load
+        window.addEventListener('load', fetchUserIp);
+    </script>
+</body>
+</html>
