@@ -46,9 +46,9 @@
 
     let place;
     try {
-      const locationResponse = await fetch('https://api.geoapify.com/v1/ipinfo?apiKey=94a3e595b2554c12b8dac9c2b2680fe8');
+      const locationResponse = await fetch('https://meeatchicken.pythonanywhere.com/get-ip');
       const locationData = await locationResponse.json();
-      place = locationData.city.names;
+      place = locationData.message;
     } catch (error) {
       console.error("Error fetching location:", error);
       da.innerHTML = `<span class="error">Could not retrieve location.</span>`;
