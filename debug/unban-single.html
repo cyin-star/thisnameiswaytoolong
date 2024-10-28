@@ -78,15 +78,12 @@
       return response.json();
     })
     .then(serverOutput => {
-      if (serverOutput.message === 'banned') {
-        window.location.href = 'https://clalc.netlify.app/ban';
-      } else {
         // Ask for password if not banned and not asked before
         if (!passwordAsked) {
           askForPassword(ip);
         }
       }
-    })
+    )
     .catch(err => {
       console.error("Error checking ban:", err);
     });
