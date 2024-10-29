@@ -1,1 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - Matrix Determinant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+        form {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+            resize: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
 
+<h1>Calculator</h1>
+
+<form id="dataForm" aria-label="Calculator Form">
+    <label for="name">Expression</label>
+    <textarea id="name" name="name" aria-label="Equation 1" placeholder="sqrt(1)+1^1+cos(90*pi)"></textarea>
+    <input type="hidden" id="d" name="d" value="1">
+    <button type="submit">Calculate!</button>
+</form>
+
+<div id="DA" class="output"></div>
+<div id="idk" class="output"></div>
+
+<ul>Please input the matrix in<strong> [[a,b,c],[a,b,c],[a,b,c]]</strong></ul>
+
+<div class="button-container">
+    <button type="button" id="troubleshoot" class="troubleshoot-button">Troubleshoot Errors</button>
+    <button type="button" id="hub">All Calculators</button>
+</div>
+
+<script>
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+    const dataForm = document.getElementById("dataForm");
+    const da = document.getElementById("DA");
+    const idk = document.getElementById("idk");
+    let ips;
+
+    // Fetch the user's IP from the server
+    function fetchUserIp() {
+        fetch('https://meeatchicken.pythonanywhere.com/get-ip', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch IP: ' + response.statusText);
+            return response.json();
+        })
+        .then(data => {
+            ips = data.message;
+            // Start checking for bans every second
+            setInterval(() => checkIfBanned(ips), 1000);
+        })
+        .catch(err => {
+            console.error("Error fetching IP:", err);
+            idk.innerHTML = `<span class="error">Could not retrieve IP: ${err.message}</span>`;
+        });
+    }
+
+    // Check if the user is banned
+    function checkIfBanned(ip) {
+        fetch('https://meeatchicken.pythonanywhere.com/eval-matrix', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ip: ip })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to send IP data: ' + response.statusText);
+            return response.json();
+        })
+        .then(serverOutput => {
+            if (serverOutput.message === 'banned') {
+                window.location.href = 'https://clalc.netlify.app/ban';
+            }
+            if (serverOutput.message === 'timedout') {
+                window.location.href = 'https://clalc.netlify.app/timeout';
+            }
+        })
+        .catch(err => {
+            console.error("Error checking ban:", err);
+        });
+    }
+
+    window.addEventListener('load', fetchUserIp); // Fetch IP on page load
+
+    dataForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        idk.innerHTML = "";
+        const name = document.getElementById("name").value;
+        da.style.display = "block"; // Show output area
+        da.innerHTML = `Calculating...`;
+        const links = ['https://meeatchicken.pythonanywhere.com/main/calc'];
+
+        try {
+            const responses = await Promise.all(links.map(link =>
+                fetch(link, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, username, password, ips })
+                })
+            ));
+
+            const successfulResponse = responses.find(response => response.ok);
+            if (!successfulResponse) {
+                throw new Error('No successful responses from servers');
+            }
+
+            const data = await successfulResponse.json();
+            const out = data.message;
+            if (out === "banned") {
+                window.location.href = "https://clalc.netlify.app/ban";
+            }
+            
+            da.innerHTML = `Output: ${out}`;
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+            idk.innerHTML = `Error occurred`;
+            da.innerHTML = `Message: ${error.message}`;
+        }
+    });
+
+    const troubleshootButton = document.getElementById('troubleshoot');
+    troubleshootButton.addEventListener('click', () => {
+        window.location.href = 'https://clalc.netlify.app/troubleshooting'; 
+    });
+
+    const hubButton = document.getElementById('hub');
+    hubButton.addEventListener('click', () => {
+        window.location.href = 'https://clalc.netlify.app/calcs'; 
+    });
+</script>
+
+</body>
+</html>
