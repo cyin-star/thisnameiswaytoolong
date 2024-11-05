@@ -121,7 +121,7 @@
 
     // Check if the user is banned
     function checkIfBanned(ip) {
-        fetch('https://meeatchicken.pythonanywhere.com/eval-matrix', {
+        fetch('https://meeatchicken.pythonanywhere.com/matrix/get_det', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
