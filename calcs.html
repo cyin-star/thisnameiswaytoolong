@@ -1,1 +1,296 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Calculator Menu</title> <style> body { font-family: Arial, sans-serif; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; } .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); text-align: center; max-width: 500px; width: 90%; } h1 { font-size: 24px; color: #333; margin-bottom: 20px; } .button { display: block; background-color: #007BFF; color: white; border: none; padding: 12px; margin: 10px 0; border-radius: 8px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease; text-decoration: none; text-align: center; } .button:hover { background-color: #0056b3; } .button:active { background-color: #004494; } </style> </head> <body> <div class="container"> <h1>Calculator Menu</h1> <button id="b1" class="button">Main Calculator</button> <button id="h1" class="button">Home</button> <button id="h2" class="button">Back</button> <button id="t1" class="button">2-Variable Linear Equations</button> <button id="s1" class="button">Statistics</button> <button id="q1" class="button">Quadratic Calculators</button> <button id="b2" class="button">Beta Calculators</button> <button id="d1" class="button">Debug Logs (Auth Needed)</button> </div> <script> // Set the base URL const baseURL = `https://eduaoation.netlify.app`; // Fetch the user's IP from the server let ips; function fetchUserIp() { fetch('https://meeatchicken.pythonanywhere.com/get-ip', { method: 'POST', headers: { 'Content-Type': 'application/json' } }) .then(response => { if (!response.ok) throw new Error('Failed to fetch IP: ' + response.statusText); return response.json(); }) .then(data => { ips = data.message; // Start checking for bans every second setInterval(() => checkIfBanned(ips), 1000); }) .catch(err => { console.error("Error fetching IP:", err); }); } // Check if the user is banned function checkIfBanned(ip) { fetch('https://meeatchicken.pythonanywhere.com/check-ban', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ip: ip }) }) .then(response => { if (!response.ok) throw new Error('Failed to send IP data: ' + response.statusText); return response.json(); }) .then(serverOutput => { if (serverOutput.message === 'banned') { window.location.href = `${baseURL}/ban`; } if (serverOutput.message === 'timedout') { window.location.href = `${baseURL}/timeout`; } }) .catch(err => { console.error("Error checking ban:", err); }); } window.addEventListener('load', fetchUserIp); // Fetch IP on page load // Define links relative to the static base URL const links = { h1: `${baseURL}`, h2: `${baseURL}/calcs`, b1: `${baseURL}/`, t1: `${baseURL}/2-var`, s1: `${baseURL}/hub/statistics`, q1: `${baseURL}/hub/quads`, b2: `${baseURL}/hub/beta`, d1: `${baseURL}/hub/debug` }; // Add event listeners to buttons to redirect on click Object.keys(links).forEach(id => { const button = document.getElementById(id); if (button) { button.addEventListener('click', () => { window.location.href = links[id]; }); } }); </script> </body> </html>
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Calculator Menu</title>
+
+<style>
+
+body {
+
+font-family: Arial, sans-serif;
+
+background-color: #f0f2f5;
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+height: 100vh;
+
+margin: 0;
+
+}
+
+
+.container {
+
+background-color: white;
+
+padding: 40px;
+
+border-radius: 12px;
+
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+text-align: center;
+
+max-width: 400px;
+
+width: 90%;
+
+}
+
+
+h1 {
+
+font-size: 26px;
+
+color: #333;
+
+margin-bottom: 20px;
+
+}
+
+
+.button {
+
+display: block;
+
+background-color: #007BFF;
+
+color: white;
+
+border: none;
+
+padding: 12px 18px;
+
+margin: 10px auto;
+
+border-radius: 8px;
+
+font-size: 16px;
+
+cursor: pointer;
+
+transition: background-color 0.3s ease, transform 0.2s;
+
+text-decoration: none;
+
+text-align: center;
+
+width: 100%;
+
+max-width: 300px;
+
+}
+
+
+.button:hover {
+
+background-color: #0056b3;
+
+transform: scale(1.02);
+
+}
+
+
+.button:active {
+
+background-color: #004494;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+<h1>Calculator Menu</h1>
+
+<button id="b1" class="button">Main Calculator</button>
+
+<button id="h1" class="button">Home</button>
+
+<button id="h2" class="button">Back</button>
+
+<button id="t1" class="button">2-Variable Linear Equations</button>
+
+<button id="s1" class="button">Statistics</button>
+
+<button id="q1" class="button">Quadratic Calculators</button>
+
+<button id="b2" class="button">Beta Calculators</button>
+
+<button id="d1" class="button">Debug Logs (Auth Needed)</button>
+
+</div>
+
+
+<script>
+
+let ips;
+
+
+// Fetch the user's IP from the server
+
+function fetchUserIp() {
+
+fetch('https://meeatchicken.pythonanywhere.com/get-ip', {
+
+method: 'POST',
+
+headers: {
+
+'Content-Type': 'application/json'
+
+}
+
+})
+
+.then(response => {
+
+if (!response.ok) throw new Error('Failed to fetch IP: ' + response.statusText);
+
+return response.json();
+
+})
+
+.then(data => {
+
+ips = data.message;
+
+// Start checking for bans every second
+
+setInterval(() => checkIfBanned(ips), 1000);
+
+})
+
+.catch(err => {
+
+console.error("Error fetching IP:", err);
+
+});
+
+}
+
+
+// Check if the user is banned
+
+function checkIfBanned(ip) {
+
+fetch('https://meeatchicken.pythonanywhere.com/check-ban', {
+
+method: 'POST',
+
+headers: {
+
+'Content-Type': 'application/json'
+
+},
+
+body: JSON.stringify({ ip: ip })
+
+})
+
+.then(response => {
+
+if (!response.ok) throw new Error('Failed to send IP data: ' + response.statusText);
+
+return response.json();
+
+})
+
+.then(serverOutput => {
+
+if (serverOutput.message === 'banned') {
+
+window.location.href = 'https://eduaoation.netlify.app/ban';
+
+}
+
+if (serverOutput.message === 'timedout') {
+
+window.location.href = 'https://eduaoation.netlify.app/timeout';
+
+}
+
+})
+
+.catch(err => {
+
+console.error("Error checking ban:", err);
+
+});
+
+}
+
+
+window.addEventListener('load', fetchUserIp); // Fetch IP on page load
+
+
+// Define button URLs
+
+const buttons = {
+
+h1: 'https://eduaoation.netlify.app',
+
+h2: 'https://eduaoation.netlify.app/calcs',
+
+b1: 'https://eduaoation.netlify.app/',
+
+t1: 'https://eduaoation.netlify.app/2-var',
+
+s1: 'https://eduaoation.netlify.app/hub/statistics',
+
+q1: 'https://eduaoation.netlify.app/hub/quads',
+
+b2: 'https://eduaoation.netlify.app/hub/beta',
+
+d1: 'https://eduaoation.netlify.app/hub/debug',
+
+};
+
+
+// Attach event listeners to buttons
+
+Object.keys(buttons).forEach(id => {
+
+const button = document.getElementById(id);
+
+if (button) {
+
+button.addEventListener('click', () => {
+
+window.location.href = buttons[id];
+
+});
+
+}
+
+});
+
+</script>
+
+
+</body>
+
+
+</html>
+
