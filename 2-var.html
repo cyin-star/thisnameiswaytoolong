@@ -155,11 +155,12 @@
   const dataForm = document.getElementById("dataForm");
   const da = document.getElementById("DA");
   const idk = document.getElementById("idk");
+  let username;
   if (localStorage.getItem("username")){
-    const username = localStorage.getItem("username");
+    username = localStorage.getItem("username");
   }
   else{
-    const username = "dhfkjasdhfkjadshfjshfjkshfsjkhfjkdhfdjhfajhfjhfjksadhfjkasdhfkjashfkjsahfaskjfhsjkhsdajkfaskjfhskjafhkjsadhfjasdfhjaskdhfsajdkhfsadjkhfadjkfhskjhsfjkasdhfkjadshfjkadshfkjsfhkjfhkjashfkjasdhfsadkjfhskjdfhasdkj"
+    username = "dhfkjasdhfkjadshfjshfjkshfsjkhfjkdhfdjhfajhfjhfjksadhfjkasdhfkjashfkjsahfaskjfhsjkhsdajkfaskjfhskjafhkjsadhfjasdfhjaskdhfsajdkhfsadjkhfadjkfhskjhsfjkasdhfkjadshfjkadshfkjsfhkjfhkjashfkjasdhfsadkjfhskjdfhasdkj"
   }
 
   dataForm.addEventListener('submit', async (event) => {
