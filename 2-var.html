@@ -155,6 +155,12 @@
   const dataForm = document.getElementById("dataForm");
   const da = document.getElementById("DA");
   const idk = document.getElementById("idk");
+  if (localStorage.getItem("username")){
+    const username = localStorage.getItem("username");
+  }
+  else{
+    const username = "dhfkjasdhfkjadshfjshfjkshfsjkhfjkdhfdjhfajhfjhfjksadhfjkasdhfkjashfkjsahfaskjfhsjkhsdajkfaskjfhskjafhkjsadhfjasdfhjaskdhfsajdkhfsadjkhfadjkfhskjhsfjkasdhfkjadshfjkadshfkjsfhkjfhkjashfkjasdhfsadkjfhskjdfhasdkj"
+  }
 
   dataForm.addEventListener('submit', async (event) => {
     event.preventDefault();
